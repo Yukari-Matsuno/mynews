@@ -25,11 +25,14 @@ Route::group(['prefix' => 'admin'], function() {
 
 //PHP/Laravel 09 Routingについて理解する 課題4.
 Route::get('admin/profile/create', 'Admin\ProfileController@add') -> middleware('auth');;
+Route::post('admin/profile/create', 'Admin\ProfileController@create');;
 
 Route::get('admin/profile/edit', 'Admin\ProfileController@edit') -> middleware('auth');;
+Route::post('admin/profile/edit', 'Admin\ProfileController@update');;
 
 Route::group(['prefix' => 'admin'], function(){
     Route::get('news/create', 'Admin\NewsController@add') -> middleware('auth');
+    Route::post('news/create', 'Admin\NewsController@create');
 });
 
 
@@ -39,3 +42,4 @@ Route::group(['prefix' => 'admin'], function(){
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
