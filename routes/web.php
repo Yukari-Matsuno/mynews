@@ -24,11 +24,13 @@ Route::group(['prefix' => 'admin'], function() {
 // Route::get('XXX', 'AAAcontroller@bbb');
 
 //PHP/Laravel 09 Routingについて理解する 課題4.
-Route::get('admin/profile/create', 'Admin\ProfileController@add') -> middleware('auth');;
-Route::post('admin/profile/create', 'Admin\ProfileController@create');;
-
-Route::get('admin/profile/edit', 'Admin\ProfileController@edit') -> middleware('auth');;
-Route::post('admin/profile/edit', 'Admin\ProfileController@update');;
+Route::group(['prefix' => 'admin'], function() {
+    Route::get('profile/create', 'Admin\ProfileController@add') -> middleware('auth');;
+    Route::post('profile/create', 'Admin\ProfileController@create');;
+    Route::get('profile/edit', 'Admin\ProfileController@edit') -> middleware('auth');;
+    Route::post('profile/edit', 'Admin\ProfileController@update');;
+    Route::get('profile', 'Admin\ProfileController@index')->middleware('auth'); // 追記
+});
 
 Route::group(['prefix' => 'admin'], function(){
     Route::get('news/create', 'Admin\NewsController@add') -> middleware('auth');
