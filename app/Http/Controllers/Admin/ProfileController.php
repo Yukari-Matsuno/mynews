@@ -16,11 +16,9 @@ class ProfileController extends Controller
     
     public function create(Request $request)
     {
-    //   return redirect('admin/profile/create');
-        
       $this->validate($request, Profile::$rules);
 
-      $news = new Profile;
+      $profile = new Profile;
       $form = $request->all();
 
     //   // フォームから画像が送信されてきたら、保存して、$news->image_path に画像のパスを保存する
@@ -46,13 +44,40 @@ class ProfileController extends Controller
 
     }
     
-    public function edit()
+    public function edit(Request $request)
     {
-        return view('admin.profile.edit');
+       // Profile Modelからデータを取得する
+      $profile = Profile::find($request->id);
+      if (empty($profile)) {
+        abort(404);    
+      }
+      return view('admin.profile.edit', ['profile_form' => $profile]);
+        // return view('admin.profile.edit');
     }
     
-    public function update()
+    public function update(Request $request)
     {
-        return redirect('admin/profile/edit');
+       // Validationをかける
+      $this->validate($request, Profile::$rules);
+      // Profile Modelからデータを取得する
+      $profile = Profile::find($request->id);
+      // 送信されてきたフォームデータを格納する
+      $profile_form = $request->all();
+      // if (isset($news_form['image'])) {
+      //   $path = $request->file('image')->store('public/image');
+      //   $news->image_path = basename($path);
+      //   unset($news_form['image']);
+      // } elseif (isset($request->remove)) {
+      //   $news->image_path = null;
+      //   unset($news_form['remove']);
+      // }
+      
+      unset($profile_form['_token']);
+
+      // 該当するデータを上書きして保存する
+      $profile->fill($profile_form)->save();
+
+      return redirect('admin/profile');
+        // return redirect('admin/profile/edit');
     }
 }
